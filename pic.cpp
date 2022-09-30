@@ -1,20 +1,12 @@
-#include "src/lexer/Lexer.cpp"
 #include <iostream>
-#include <map>
+#include "include/lexer/Lexer.hpp"
+#include "include/lexer/Tag.hpp"
 
 const std::string PATH = "/home/leafar/documents/prg/code/c-projects/pic/code.py";
 
-int main() {	Lexer lex(PATH);
+int main() {
+  Lexer lex(PATH);
   lex.scan();
-  std::cout << "		        Token Table\n";
-  std::cout << "---------------------------------------------------------\n";
-  std::map<std::string, Token> tokenTable = lex.getTokenTable();
-  for (
-  	std::map<std::string, Token>::iterator it = tokenTable.begin();
-  	it != tokenTable.end();
-  	it++
-  ) {
-  	std::cout << it->second << std::endl;
-  }
+  lex.printTokenTable();
   return 0;
 }

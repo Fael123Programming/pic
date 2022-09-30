@@ -1,6 +1,8 @@
+#pragma once
+
 enum Tag {
     // Data types.
-    INTEGER = 256, FLOAT, BOOL, STRING, // OK.
+    INTEGER = 256, FLOAT, BOOL, STRING,
     // Variables and functions.
     ID,
     // Assignment.
@@ -14,6 +16,7 @@ enum Tag {
     PLUS, MINUS, MULT, DIV, MOD, POW, INT_DIV,
     //Logic operators.
     AND, OR, NOT,
+    IN,
     // Control flow.
-    IF, ELSE, WHILE, FOR // OK.
+    IF, ELSE, WHILE, FOR 
 };

@@ -1,12 +1,6 @@
-# asdasda sd
-""""""
-'''
-'
-''
-asdasd
-'''
-a = int(input("Give me a number: "))
-if a < 100:
-    print(a, " < 100")
+name = input("Give me your name: ")
+if name == 'Gilmar':
+    print('Awesome... ')
 else:
-    print(a, " >= 100")
+    print('Not awesome...')
+'''asdas'''

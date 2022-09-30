@@ -1,6 +1,7 @@
-#include <iostream>
-#include "../../src/lexer/Tag.cpp"
+#pragma once
 
+#include <iostream>
+#include "Tag.hpp"
 
 class Token {
     public:
@@ -14,6 +15,8 @@ class Token {
 
         int getTrn() const;
 
+        void setTrn(int trn);
+
         friend std::ostream& operator <<(std::ostream&, const Token&);
 
         std::string asString() const;
@@ -23,6 +26,4 @@ class Token {
         std::string lexeme;
         
         int trn; //Table row number.
-
-        static int nextTrn; //Static variable to computer what is the next table row number.
 };

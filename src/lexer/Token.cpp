@@ -1,97 +1,103 @@
 #include <iostream>
-#include "../../include/lexer/Token.h"
+#include "../../include/lexer/Token.hpp"
+// #include "../../include/lexer/Tag.hpp"
+// #include <magic_enum.hpp>  // header plus plus
 
-int Token::nextTrn = 1;
-
-Token::Token(Tag tokenTag, std::string tokenLexeme) : tag(tokenTag), lexeme(tokenLexeme), trn(Token::nextTrn++) {}
+Token::Token(Tag tokenTag, std::string tokenLexeme) : tag(tokenTag), lexeme(tokenLexeme) {}
 
 std::string Token::getTag() const { 
-    switch(tag) {
-        case INTEGER:
+    switch (this->tag) {
+        case Tag::INTEGER:
             return "INTEGER";
-        case FLOAT:
+        case Tag::FLOAT:
             return "FLOAT";
-        case BOOL:
+        case Tag::BOOL:
             return "BOOL";
-        case STRING:
+        case Tag::STRING:
             return "STRING";
-        case ID:
+        case Tag::ID:
             return "ID";
-        case IF:
-            return "IF";
-        case ELSE:
-            return "ELSE";
-        case FOR:
-            return "FOR";
-        case WHILE:
-            return "WHILE";
-        case ASSIGNMENT:
+        case Tag::ASSIGNMENT:
             return "ASSIGNMENT";
-        case PLUS_ASSIGNMENT:
+        case Tag::PLUS_ASSIGNMENT:
             return "PLUS_ASSIGNMENT";
-        case MINUS_ASSIGNMENT:
+        case Tag::MINUS_ASSIGNMENT:
             return "MINUS_ASSIGNMENT";
-        case MULT_ASSIGNMENT:
+        case Tag::MULT_ASSIGNMENT:
             return "MULT_ASSIGNMENT";
-        case DIV_ASSIGNMENT:
+        case Tag::DIV_ASSIGNMENT:
             return "DIV_ASSIGNMENT";
-        case MOD_ASSIGNMENT:
+        case Tag::MOD_ASSIGNMENT:
             return "MOD_ASSIGNMENT";
-        case COMMA:
+        case Tag::COMMA:
             return "COMMA";
-        case OPENING_BRACKET:
+        case Tag::OPENING_BRACKET:
             return "OPENING_BRACKET";
-        case OPENING_PARENTHESIS:
+        case Tag::OPENING_PARENTHESIS:
             return "OPENING_PARENTHESIS";
-        case CLOSING_BRACKET:
+        case Tag::CLOSING_BRACKET:
             return "CLOSING_BRACKET";
-        case CLOSING_PARENTHESIS:
+        case Tag::CLOSING_PARENTHESIS:
             return "CLOSING_PARENTHESIS";
-        case OPENING_CURLY_BRACE:
+        case Tag::OPENING_CURLY_BRACE:
             return "OPENING_CURLY_BRACE";
-        case CLOSING_CURLY_BRACE:
+        case Tag::CLOSING_CURLY_BRACE:
             return "CLOSING_CURLY_BRACE";
-        case COLON:
+        case Tag::COLON:
             return "COLON";
-        case EQUAL:
+        case Tag::EQUAL:
             return "EQUAL";
-        case UNEQUAL:
+        case Tag::UNEQUAL:
             return "UNEQUAL";
-        case GREATER_THAN:
+        case Tag::GREATER_THAN:
             return "GREATER_THAN";
-        case GREATER_THAN_EQUAL:
+        case Tag::GREATER_THAN_EQUAL:
             return "GREATER_THAN_EQUAL";
-        case LESS_THAN:
+        case Tag::LESS_THAN:
             return "LESS_THAN";
-        case LESS_THAN_EQUAL:
+        case Tag::LESS_THAN_EQUAL:
             return "LESS_THAN_EQUAL";
-        case PLUS:
+        case Tag::PLUS:
             return "PLUS";
-        case MINUS:
+        case Tag::MINUS:
             return "MINUS";
-        case MULT:
+        case Tag::MULT:
             return "MULT";
-        case DIV:
+        case Tag::DIV:
             return "DIV";
-        case INT_DIV:
-            return "INT_DIV";
-        case MOD:
+        case Tag::MOD:
             return "MOD";
-        case POW:
+        case Tag::POW:
             return "POW";
-        case AND:
+        case Tag::INT_DIV:
+            return "INT_DIV";
+        case Tag::AND:
             return "AND";
-        case OR:
+        case Tag::OR:
             return "OR";
-        case NOT:
+        case Tag::NOT:
             return "NOT";
-    } 
+        case Tag::IN:
+            return "IN";
+        case Tag::IF:    
+            return "IF";
+        case Tag::ELSE:
+            return "ELSE";
+        case Tag::WHILE:
+            return "WHILE";
+        case Tag::FOR:
+            return "FOR";
+    }
     return "UNKNOWN";
 }
 
 std::string Token::getLexeme() const { return lexeme; }
 
 int Token::getTrn() const { return trn; }
+
+void Token::setTrn(int trn) {
+    this->trn = trn;
+}
 
 std::string Token::asString() const {
     return "<" + getTag() + ", " + lexeme + ", " + std::to_string(trn) + ">";
