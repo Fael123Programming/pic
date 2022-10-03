@@ -1,6 +1,2 @@
-name = input("Give me your name: ")
-if name == 'Gilmar':
-    print('Awesome... ')
-else:
-    print('Not awesome...')
-'''asdas'''
+a = 'Python'    ' is an '' awesome'           'language'"asd"
+print(a)

@@ -1,0 +1,8 @@
+/home/leafar/documents/prg/code/c-projects/pic/build/CMakeFiles/PIC.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/CMakeFiles/edit_cache.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/CMakeFiles/rebuild_cache.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/libraries/magic_enum/CMakeFiles/edit_cache.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/libraries/magic_enum/CMakeFiles/rebuild_cache.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/libraries/fmt/CMakeFiles/fmt.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/libraries/fmt/CMakeFiles/edit_cache.dir
+/home/leafar/documents/prg/code/c-projects/pic/build/libraries/fmt/CMakeFiles/rebuild_cache.dir

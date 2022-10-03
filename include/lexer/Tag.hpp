@@ -18,5 +18,5 @@ enum Tag {
     AND, OR, NOT,
     IN,
     // Control flow.
-    IF, ELSE, WHILE, FOR 
+    IF, ELSE, WHILE, FOR, CONTINUE, BREAK
 };

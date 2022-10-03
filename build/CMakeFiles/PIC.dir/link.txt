@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/PIC.dir/pic.cpp.o CMakeFiles/PIC.dir/src/lexer/Lexer.cpp.o CMakeFiles/PIC.dir/src/lexer/Token.cpp.o -o PIC  libraries/fmt/libfmtd.a 

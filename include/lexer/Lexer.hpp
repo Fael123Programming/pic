@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "Token.hpp"
 #include <map>
+#include "Token.hpp"
 
 class Lexer {
     public:
@@ -13,8 +13,7 @@ class Lexer {
         std::map<std::string, Token> getTokenTable() const;
 
         void printTokenTable() const;
-
-    private:
+    // private:
         static int nextTrn;
         
         std::map<std::string, Token> tokenTable; 
@@ -41,7 +40,7 @@ class Lexer {
         
         bool matchLine(std::string);
 
-        bool tokenLexemeAlreadyInTokenTable(std::string);
+        bool tokenLexemeExists(std::string); // For Token, key = 'getTag()' and for Word, key = 'getLexeme()'.
 
         void extractFileContent();
 

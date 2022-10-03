@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/leafar/documents/prg/code/c-projects/pic/build",
+  "command": "/usr/bin/g++  -I/home/leafar/documents/prg/code/c-projects/pic/libraries/magic_enum/include -I/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/include -g -std=gnu++20 -o CMakeFiles/PIC.dir/pic.cpp.o -c /home/leafar/documents/prg/code/c-projects/pic/pic.cpp",
+  "file": "/home/leafar/documents/prg/code/c-projects/pic/pic.cpp"
+},
+{
+  "directory": "/home/leafar/documents/prg/code/c-projects/pic/build",
+  "command": "/usr/bin/g++  -I/home/leafar/documents/prg/code/c-projects/pic/libraries/magic_enum/include -I/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/include -g -std=gnu++20 -o CMakeFiles/PIC.dir/src/lexer/Lexer.cpp.o -c /home/leafar/documents/prg/code/c-projects/pic/src/lexer/Lexer.cpp",
+  "file": "/home/leafar/documents/prg/code/c-projects/pic/src/lexer/Lexer.cpp"
+},
+{
+  "directory": "/home/leafar/documents/prg/code/c-projects/pic/build",
+  "command": "/usr/bin/g++  -I/home/leafar/documents/prg/code/c-projects/pic/libraries/magic_enum/include -I/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/include -g -std=gnu++20 -o CMakeFiles/PIC.dir/src/lexer/Token.cpp.o -c /home/leafar/documents/prg/code/c-projects/pic/src/lexer/Token.cpp",
+  "file": "/home/leafar/documents/prg/code/c-projects/pic/src/lexer/Token.cpp"
+},
+{
+  "directory": "/home/leafar/documents/prg/code/c-projects/pic/build/libraries/fmt",
+  "command": "/usr/bin/g++  -I/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/include -g -std=gnu++20 -o CMakeFiles/fmt.dir/src/format.cc.o -c /home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/src/format.cc",
+  "file": "/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/src/format.cc"
+},
+{
+  "directory": "/home/leafar/documents/prg/code/c-projects/pic/build/libraries/fmt",
+  "command": "/usr/bin/g++  -I/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/include -g -std=gnu++20 -o CMakeFiles/fmt.dir/src/os.cc.o -c /home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/src/os.cc",
+  "file": "/home/leafar/documents/prg/code/c-projects/pic/libraries/fmt/src/os.cc"
+}
+]

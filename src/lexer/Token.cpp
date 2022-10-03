@@ -3,7 +3,7 @@
 // #include "../../include/lexer/Tag.hpp"
 // #include <magic_enum.hpp>  // header plus plus
 
-Token::Token(Tag tokenTag, std::string tokenLexeme) : tag(tokenTag), lexeme(tokenLexeme) {}
+Token::Token(Tag tokenTag, std::string lexeme) : tag(tokenTag), lexeme(lexeme) {}
 
 std::string Token::getTag() const { 
     switch (this->tag) {
@@ -87,11 +87,13 @@ std::string Token::getTag() const {
             return "WHILE";
         case Tag::FOR:
             return "FOR";
+        case Tag::BREAK:
+            return "BREAK";
+        case Tag::CONTINUE:
+            return "CONTINUE";
     }
     return "UNKNOWN";
 }
-
-std::string Token::getLexeme() const { return lexeme; }
 
 int Token::getTrn() const { return trn; }
 
@@ -99,11 +101,15 @@ void Token::setTrn(int trn) {
     this->trn = trn;
 }
 
-std::string Token::asString() const {
-    return "<" + getTag() + ", " + lexeme + ", " + std::to_string(trn) + ">";
+std::string Token::getLexeme() const {
+    return this->lexeme;
 }
 
 std::ostream& operator <<(std::ostream& out, const Token& token) {
-    out << token.asString();
+    out << token.toString();
     return out;
+}
+
+ std::string Token::toString() const {
+    return "<" + this->getTag() + ", " + this->lexeme + ", " + std::to_string(trn) + ">";
 }

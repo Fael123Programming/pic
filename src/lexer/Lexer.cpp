@@ -14,8 +14,8 @@ bool sortByTokenTableEntryNumber(const std::pair<std::string, Token> &pair1, con
     return pair1.second.getTrn() < pair2.second.getTrn();
 }
 
-std::pair<std::string, Token> makePair(std::string lexeme, Token tk) {
-    return std::pair<std::string, Token> (lexeme, tk);
+std::pair<std::string, Token> makePair(std::string key, Token tk) {
+    return std::pair<std::string, Token> (key, tk);
 }
 
 int Lexer::nextTrn = 1;
@@ -29,6 +29,10 @@ void Lexer::scan() {
     while (this->i < fileContentSize - 1) {
         this->next();
         switch (this->current) {
+            case ' ':
+            case '\n':
+            case '\t':
+                continue;
             case '#':
                 this->handleHashtag();
                 break;
@@ -49,6 +53,8 @@ void Lexer::scan() {
             case '8':
             case '9':
             case '.':
+            case '+':
+            case '-':
                 this->handleNumber();
                 break;
             case 'a':
@@ -154,14 +160,16 @@ std::string Lexer::getFileContent() {
 }
 
 void Lexer::addTokenIntoTable(Token tk) {
-    if (!this->tokenLexemeAlreadyInTokenTable(tk.getLexeme())) {
-        tk.setTrn(Lexer::nextTrn++);
-        tokenTable.insert(std::pair<std::string, Token>(tk.getLexeme(), tk));
+    std::string lexeme = tk.getLexeme();
+    if (this->tokenLexemeExists(lexeme)) {
+        return;
     }
+    tk.setTrn(Lexer::nextTrn++);
+    this->tokenTable.insert(std::pair<std::string, Token>(lexeme, tk));
 }
 
-bool Lexer::tokenLexemeAlreadyInTokenTable(std::string lexeme) {
-    return tokenTable.count(lexeme) > 0;
+bool Lexer::tokenLexemeExists(std::string lexeme) {
+    return this->tokenTable.count(lexeme) > 0;
 }
 
 bool Lexer::next() {
@@ -245,8 +253,27 @@ void Lexer::handleQuote(char quote) {
             this->addTokenIntoTable(Token(Tag::STRING, ""));
         }
     } else {
-        while (this->current != '\n') {
+        while (this->current != '\n') { // Read the whole line.
             if (this->current == quote) {
+                this->previous();
+                if (this->current == '\\') { // Scaping the quote.
+                    word = word.substr(0, word.size() - 1) + quote; // Ignore a '\'.
+                    this->next();
+                    this->next();
+                    if (this->current == '\n') {
+                        std::cout << "# Syntax error caught on: " << quote << " #\n";
+                        std::cout << "# Unclosed string #\n";
+                        exit(1);
+                    }
+                    continue;
+                }
+                this->next();
+                if (this->matchLine("'")) { 
+                    // If there are more strings, get them also.
+                    // Python allows the following syntax for strings:
+                    // a = 'foo' 'bar''python' // ----> 'foobarpython'
+                    continue;
+                }
                 this->addTokenIntoTable(Token(Tag::STRING, word));
                 return;
             }
@@ -254,28 +281,136 @@ void Lexer::handleQuote(char quote) {
             this->next();
         }
         std::cout << "# Syntax error caught on: " << quote << " #\n";
-        std::cout << "# Invalid lexeme: unclosed string #\n";
+        std::cout << "# Unclosed string #\n";
         exit(1);
     }
 }
 
 void Lexer::handleNumber() {
-    while (std::isdigit(this->current) || this->current == '.') {
-        if (this->current == '.' && isPresent(word, '.')) {
-            std::cout << "# Lexical error caught on '" << word << ".' #\n";
-            std::cout << "# Numbers may have only one dot. #\n";
+    if (this->current == '+' || this->current == '-') { // Handle leading signs.
+        word = this->current;
+        this->next();
+        while (this->current == '+' || this->current == '-') {
+            std::string s(1, this->current);
+            if (word.compare(s) == 0) { // They are equal.
+                word = "+";
+            } else {
+                word = "-";
+            }
+            this->next();
+        }
+    }
+    if (std::isdigit(this->current)) {
+        while (std::isdigit(this->current)) {
+            word += this->current;
+            this->next();
+        }
+        if (this->current == '.') { // q8: acceptance state.
+            word += '.';
+            this->next();
+            while (std::isdigit(this->current)) {
+                word += this->current;
+                this->next();
+            }
+            if (this->current == 'e' || this->current == 'E') { // q13
+                word += this->current;
+                this->next();
+                if (this->current == '+' || this->current == '-') { // q3
+                    word += this->current;
+                }
+                this->next();
+                if (std::isdigit(this->current)) { // q10
+                    word += this->current;
+                    this->next();
+                    while (std::isdigit(this->current)) {
+                        word += this->current;
+                        this->next();
+                    }
+                    this->previous();
+                } else {
+                    std::cout << "# Syntax error caught on '" << word << "' #\n";
+                    std::cout << "# Invalid number #\n";
+                    exit(1);
+                }
+            } else {
+                this->previous();
+            }
+            this->addTokenIntoTable(Token(Tag::FLOAT, word));
+        } else if (this->current == 'e' || this->current == 'E') {
+            word += this->current;
+            this->next();
+            if (std::isdigit(this->current)) {
+                word += this->current;
+                this->next();
+                while (std::isdigit(this->current)) {
+                    word += this->current;
+                    this->next();
+                }
+                this->previous();
+                this->addTokenIntoTable(Token(Tag::INTEGER, word));
+            } else {
+                std::cout << "# Syntax error caught on '" << word << "' #\n";
+                std::cout << "# Invalid number #\n";
+                exit(1);
+            }
+        } else { // q7: acceptance state.   
+            this->previous();        
+            this->addTokenIntoTable(Token(Tag::INTEGER, word));
+        }
+    } else if (this->current == '.') {
+        word += ".";
+        this->next();
+        if (std::isdigit(this->current)) {
+            word += this->current;
+            this->next();
+            while (std::isdigit(this->current)) {
+                word += this->current;
+                this->next();
+            }
+            if (this->current == 'e' || this->current == 'E') {
+                word += this->current;
+                this->next();
+                if (this->current == '+' || this->current == '-') {
+                    word += this->current;
+                    this->next();
+                }
+                if (std::isdigit(this->current)) {
+                    word += this->current;
+                    this->next();
+                    while (std::isdigit(this->current)) {
+                        word += this->current;
+                        this->next();
+                    }
+                    this->previous();
+                } else {
+                    std::cout << "# Syntax error caught on '" << word << "' #\n";
+                    std::cout << "# Invalid number #\n";
+                    exit(1);
+                }
+            } else {
+                this->previous();
+            }
+            this->addTokenIntoTable(Token(Tag::FLOAT, word));
+        } else {
+            std::cout << "# Syntax error caught on '" << word << "' #\n";
+            std::cout << "# Invalid syntax #\n";
             exit(1);
         }
-        word += this->current;
-        this->next();
-    }
-    this->previous();
-    if (isPresent(word, '.')) {
-        tag = Tag::FLOAT;
     } else {
-        tag = Tag::INTEGER;
+        if (this->current == '=') {
+            word += '=';
+        }
+        if (word == "+=") {
+            tag = PLUS_ASSIGNMENT;
+        } else if (word == "-=") {
+            tag = MINUS_ASSIGNMENT;
+        } else if (word == "+") {
+            tag = PLUS;
+        } else if (word == "-") {
+            tag = MINUS;
+        }
+        this->addTokenIntoTable(Token(tag, word));
     }
-    this->addTokenIntoTable(Token(tag, word));
 }
 
 void Lexer::handleAlpha() {
@@ -303,6 +438,10 @@ void Lexer::handleAlpha() {
         tag = Tag::NOT;
     } else if (word == "in") {
         tag = Tag::IN;
+    } else if (word == "break") {
+        tag = Tag::BREAK;
+    } else if (word == "continue") {
+        tag = Tag::CONTINUE;
     }
     this->addTokenIntoTable(Token(tag, word));
 }
@@ -320,28 +459,28 @@ void Lexer::handleOther() {
                 this->previous();
             }
             break;
-        case '+':
-            word = "+";
-            tag = Tag::PLUS;
-            this->next();
-            if (this->current == '=') {
-                word += "=";
-                tag = Tag::PLUS_ASSIGNMENT;
-            } else {
-                this->previous();
-            }
-            break;
-        case '-':
-            word = "-";
-            tag = Tag::MINUS;
-            this->next();
-            if (this->current == '=') {
-                word += "=";
-                tag = Tag::MINUS_ASSIGNMENT;
-            } else {
-                this->previous();
-            }
-            break;
+        // case '+':
+        //     word = "+";
+        //     tag = Tag::PLUS;
+        //     this->next();
+        //     if (this->current == '=') {
+        //         word += "=";
+        //         tag = Tag::PLUS_ASSIGNMENT;
+        //     } else {
+        //         this->previous();
+        //     }
+        //     break;
+        // case '-':
+        //     word = "-";
+        //     tag = Tag::MINUS;
+        //     this->next();
+        //     if (this->current == '=') {
+        //         word += "=";
+        //         tag = Tag::MINUS_ASSIGNMENT;
+        //     } else {
+        //         this->previous();
+        //     }
+        //     break;
         case '*':
             word = "*";
             tag = Tag::MULT;
@@ -453,7 +592,5 @@ void Lexer::handleOther() {
                 exit(1);
             }
     }
-    if (!word.empty()) {
-        this->addTokenIntoTable(Token(tag, word));
-    }
+    this->addTokenIntoTable(Token(tag, word));
 }
