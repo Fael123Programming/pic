@@ -317,8 +317,8 @@ void Lexer::handleNumber() {
                 this->next();
                 if (this->current == '+' || this->current == '-') { // q3
                     word += this->current;
+                    this->next();
                 }
-                this->next();
                 if (std::isdigit(this->current)) { // q10
                     word += this->current;
                     this->next();

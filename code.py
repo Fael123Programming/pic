@@ -1,2 +1,2 @@
-a = 'Python'    ' is an '' awesome'           'language'"asd"
+a = -14.5e+4
 print(a)
